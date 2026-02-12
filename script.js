@@ -12,7 +12,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Add scroll animation for sections
+// Scroll animation for sections
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -27,7 +27,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all sections
 document.querySelectorAll('section').forEach(section => {
     section.style.opacity = '0';
     section.style.transform = 'translateY(20px)';
@@ -35,34 +34,79 @@ document.querySelectorAll('section').forEach(section => {
     observer.observe(section);
 });
 
-// Track CTA button clicks (optional - for analytics)
-document.querySelectorAll('.cta-button').forEach(button => {
+// Counter animation
+function animateCounter(el) {
+    const target = parseInt(el.dataset.target);
+    const duration = 2000;
+    const start = performance.now();
+
+    function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // ease-out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+        el.textContent = current.toLocaleString();
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const counters = entry.target.querySelectorAll('.stat-number[data-target]');
+            counters.forEach(counter => {
+                if (!counter.dataset.animated) {
+                    counter.dataset.animated = 'true';
+                    animateCounter(counter);
+                }
+            });
+        }
+    });
+}, { threshold: 0.3 });
+
+const statsSection = document.querySelector('.stats');
+if (statsSection) {
+    counterObserver.observe(statsSection);
+}
+
+// Sticky CTA visibility
+const stickyCta = document.getElementById('stickyCta');
+const heroSection = document.querySelector('.hero');
+
+if (stickyCta && heroSection) {
+    const stickyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                stickyCta.classList.remove('visible');
+            } else {
+                stickyCta.classList.add('visible');
+            }
+        });
+    }, { threshold: 0 });
+
+    stickyObserver.observe(heroSection);
+}
+
+// Track CTA button clicks
+document.querySelectorAll('.cta-button, .sticky-cta-button').forEach(button => {
     button.addEventListener('click', function () {
         const buttonText = this.textContent.trim();
         console.log('CTA clicked:', buttonText);
-
-        // You can add analytics tracking here
-        // Example: gtag('event', 'cta_click', { button_name: buttonText });
     });
 });
 
-// Add active state to cards on mobile touch
+// Touch feedback on mobile
 if ('ontouchstart' in window) {
     document.querySelectorAll('.channel-card, .content-card, .social-card').forEach(card => {
         card.addEventListener('touchstart', function () {
             this.style.transform = 'scale(0.98)';
         });
-
         card.addEventListener('touchend', function () {
             this.style.transform = '';
         });
     });
 }
-
-// Lazy load background image
-window.addEventListener('load', () => {
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.backgroundImage = "url('hero_background.png')";
-    }
-});
