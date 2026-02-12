@@ -88,8 +88,8 @@ body {
 .hero-profile-img {
     width: 320px;
     height: auto;
-    mix-blend-mode: multiply;
-    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.15));
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
     animation: heroFloat 4s ease-in-out infinite;
 }
 
@@ -825,8 +825,8 @@ section {
     width: 180px;
     height: auto;
     margin-bottom: var(--spacing-md);
-    mix-blend-mode: multiply;
-    filter: drop-shadow(0 6px 20px rgba(0,0,0,0.12));
+    border-radius: var(--radius-lg);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     animation: heroFloat 4s ease-in-out infinite;
 }
 
