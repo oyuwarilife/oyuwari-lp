@@ -147,6 +147,19 @@ body {
     font-weight: 500;
 }
 
+.hero-transformation {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 0.6rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    letter-spacing: 0.02em;
+}
+
 .hero-note {
     margin-top: var(--spacing-md);
     color: var(--navy);
